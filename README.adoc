@@ -1,5 +1,7 @@
 = PgBouncer for Kubernetes
 
+Deploy a https://quay.io/repository/tipti/pgbouncer[PgBouncer container image] on Kubernetes.
+
 == How to use
 
 Create a `pgbouncer.ini` file:
