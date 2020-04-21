@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgbouncer
+  namespace: pgbouncer
+  labels:
+    app: pgbouncer
+spec:
+  type: ClusterIP
+  selector:
+    app: pgbouncer
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

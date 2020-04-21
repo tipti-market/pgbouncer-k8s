@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgbouncer
+  namespace: pgbouncer
+  labels:
+    app: pgbouncer
+spec:
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: pgbouncer
+  template:
+    metadata:
+      labels:
+        app: pgbouncer
+    spec:
+      containers:
+        - name: pgbouncer
+          image: quay.io/tipti/pgbouncer:1.12.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: configfiles
+              mountPath: "/etc/pgbouncer"
+              readOnly: true
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            periodSeconds: 60
+          lifecycle:
+            preStop:
+              exec:
+                # Allow existing queries clients to complete within 120 seconds
+                command: ["/bin/sh", "-c", "killall -INT pgbouncer && sleep 120"]
+      volumes:
+        - name: configfiles
+          secret:
+            secretName: pgbouncer-config
