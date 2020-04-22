@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: pgbouncer
-          image: quay.io/tipti/pgbouncer:1.12.0
+          image: quay.io/tipti/pgbouncer:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5432
